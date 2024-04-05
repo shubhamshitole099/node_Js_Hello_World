@@ -11,7 +11,7 @@ app.use(bodyParser.json(), cors());
 const uri = "mongodb://localhost:27017"; // Assuming MongoDB is running on the same instance
 
 // Database Name
-const dbName = 'employee';
+const dbName = '';
 
 app.get('/', (req, res) => {
   res.send('Welcome to Nodejs API Project');
