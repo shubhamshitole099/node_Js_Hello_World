@@ -5,20 +5,26 @@ const mongoose = require('mongoose');
 const app = express();
 const port = process.env.PORT || 8080;
 
-// Update the MongoDB connection string with your password
-const uri = "mongodb+srv://root:root@devcreate.crthbhn.mongodb.net/?retryWrites=true&w=majority&appName=devcreate";
+// MongoDB connection URI
+const uri = "mongodb://127.0.0.1:27017"; // Assuming MongoDB is running locally
+const dbName = 'employee';
 
-mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+// Connect to MongoDB using Mongoose
+mongoose.connect(`${uri}/${dbName}`, { useNewUrlParser: true, useUnifiedTopology: true });
 
+// Define a schema for your data model
 const employeeSchema = new mongoose.Schema({
   name: String,
   mobile: String
 });
 
+// Create a Mongoose model based on the schema
 const Employee = mongoose.model('Employee', employeeSchema);
 
+// Middleware setup
 app.use(bodyParser.json());
 
+// Route to add data to the database (using POST method)
 app.post('/add', async (req, res) => {
   try {
     const demoData = [
@@ -26,8 +32,11 @@ app.post('/add', async (req, res) => {
       { "name": "Jane Smith", "mobile": "0987654321" }
     ];
 
+    // Iterate over each object in demoData array
     for (const data of demoData) {
+      // Create a new document using the Employee model
       const newEmployee = new Employee(data);
+      // Save the document to the database
       await newEmployee.save();
     }
 
@@ -38,23 +47,6 @@ app.post('/add', async (req, res) => {
   }
 });
 
-app.get('/employees', async (req, res) => {
-  try {
-
-    const employees = await Employee.find();
-
-    res.status(200).json(employees);
-  } catch (err) {
-
-    console.error("Error occurred while fetching employees:", err);
-    res.status(500).send('Internal Server Error');
-  }
-});
-
-
-
-
-
 
 app.get('/', (req, res) => {
   res.send('Welcome to Nodejs API Project');
@@ -63,6 +55,7 @@ app.get('/', (req, res) => {
 app.get('/hello', (req, res) => {
   res.send('Hello World!!');
 });
+
 
 app.listen(port, () => {
   console.log(`Server is up and running on port ${port}`);

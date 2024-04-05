@@ -6,7 +6,7 @@ const app = express();
 const port = process.env.PORT || 8080;
 
 // Update the MongoDB connection string with your password
-const uri = "mongodb+srv://root:root@devcreate.crthbhn.mongodb.net/?retryWrites=true&w=majority&appName=devcreate";
+const uri = "mongodb+srv://root:<password>@devcreate.nsob8ua.mongodb.net/?retryWrites=true&w=majority&appName=devcreate";
 
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -37,24 +37,6 @@ app.post('/add', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
-
-app.get('/employees', async (req, res) => {
-  try {
-
-    const employees = await Employee.find();
-
-    res.status(200).json(employees);
-  } catch (err) {
-
-    console.error("Error occurred while fetching employees:", err);
-    res.status(500).send('Internal Server Error');
-  }
-});
-
-
-
-
-
 
 app.get('/', (req, res) => {
   res.send('Welcome to Nodejs API Project');

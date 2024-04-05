@@ -40,12 +40,13 @@ app.post('/add', async (req, res) => {
 
 app.get('/employees', async (req, res) => {
   try {
-
+    
     const employees = await Employee.find();
 
+    // Return the list of employees as JSON response
     res.status(200).json(employees);
   } catch (err) {
-
+    // Handle errors
     console.error("Error occurred while fetching employees:", err);
     res.status(500).send('Internal Server Error');
   }
